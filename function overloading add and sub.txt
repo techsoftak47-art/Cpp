@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+class Calculator {
+public:
+    // Overloaded sum for 2 numbers
+    int sum(int a, int b) {
+        return a + b;
+    }
+
+    // Overloaded sum for 3 numbers
+    int sum(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    // Overloaded sub for 2 numbers
+    int sub(int a, int b) {
+        return a - b;
+    }
+
+    // Overloaded sub for 3 numbers
+    int sub(int a, int b, int c) {
+        return a - b - c;
+    }
+};
+
+int main() {
+    Calculator calc; // Single object
+
+    // Calling overloaded functions with 2 and 3 values
+    cout << "Sum of 2 numbers: " << calc.sum(15, 25) << endl;
+    cout << "Sum of 3 numbers: " << calc.sum(10, 20, 30) << endl;
+    
+    cout << "Sub of 2 numbers: " << calc.sub(50, 20) << endl;
+    cout << "Sub of 3 numbers: " << calc.sub(100, 30, 20) << endl;
+
+    return 0;
+}
