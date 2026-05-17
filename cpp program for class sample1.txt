@@ -1,0 +1,58 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+using namespace std;
+
+class Student
+{
+ public:
+ int rollno;
+ string name;
+ void set(int r, string n)
+ {
+  rollno=r;
+  name=n;
+ }
+ 
+ void display()
+ {
+     cout<<"name is :"<<name<<"\t"<<"roll no is"<<rollno<<"\n";
+     
+ }
+ 
+};
+
+class CSE:public Student{
+public:
+ string projTitle;
+}
+
+int main()
+{
+    Student s[5];
+    int r;
+    string n;
+    
+    for(int slno=0;slno<5;slno++)
+    {
+        cout<<"Enter detail of student "<<slno+1;
+        cin>>r>>n;
+        s[slno].set(r,n);
+        
+    }
+    
+    for(int slno=0;slno<5;slno++)
+    {
+       s[slno].display(); 
+    }
+    
+    //s[0].set(100,"anju");
+    //s[0].display();
+    return 0;
+}
