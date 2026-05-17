@@ -1,0 +1,129 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+// Class 1: Woman (Passenger)
+class Woman {
+public:
+    string name, phNo, emergencyPhNo, pickup, destination;
+
+    void getDetails() {
+        cout << "\n--- Enter Women Details ---" << endl;
+        cout << "Name: "; cin.ignore(); getline(cin, name);
+        cout << "Phone Number: "; getline(cin, phNo);
+        cout << "Emergency Contact: "; getline(cin, emergencyPhNo);
+        cout << "Pickup Point: "; getline(cin, pickup);
+        cout << "Destination: "; getline(cin, destination);
+    }
+
+    void sosAlert() {
+        if (name == "") cout << "\n[!!! SOS ALERT !!!] Emergency alert sent to authorities!" << endl;
+        else cout << "\n[!!! SOS ALERT !!!] Emergency alert sent for " << name << "!" << endl;
+    }
+
+    void saveToFile() {
+        ofstream outFile("rides.txt", ios::app);
+        outFile << "Passenger: " << name << " | Ph: " << phNo << " | Route: " << pickup << " to " << destination << endl;
+        outFile.close();
+        cout << "Ride requested and logged." << endl;
+    }
+};
+
+// Class 2: Driver
+class Driver {
+public:
+    string driverName = "", vehicleName = "", licenseNo = "";
+
+    void setDriverDetails() {
+        cout << "\n--- Register Driver ---" << endl;
+        cout << "Driver Name: "; cin.ignore(); getline(cin, driverName);
+        cout << "Vehicle Name: "; getline(cin, vehicleName);
+        cout << "License No: "; getline(cin, licenseNo);
+        cout << "Driver registered successfully." << endl;
+    }
+
+    void showWomenDetails() {
+        ifstream inFile("rides.txt");
+        string line;
+        cout << "\n--- Active Ride Requests ---" << endl;
+        bool found = false;
+        while (getline(inFile, line)) {
+            cout << line << endl;
+            found = true;
+        }
+        if (!found) cout << "No active ride requests." << endl;
+        inFile.close();
+    }
+
+    void pickRide() {
+        if (driverName == "") {
+            cout << "Error: No driver registered to pick the ride!" << endl;
+            return;
+        }
+        cout << "\nDriver " << driverName << " is picking up the passenger." << endl;
+    }
+
+    void removeRide() {
+        ofstream outFile("rides.txt", ios::trunc); 
+        outFile.close();
+        cout << "Ride completed. Records cleared." << endl;
+    }
+};
+
+// Class 3: Admin
+class Admin {
+public:
+    void viewAllData(Driver d) {
+        cout << "\n--- Admin System Overview ---" << endl;
+        cout << ">> Registered Driver Details <<" << endl;
+        if (d.driverName == "") cout << "No driver registered yet." << endl;
+        else cout << "Name: " << d.driverName << "\nVehicle: " << d.vehicleName << "\nLicense: " << d.licenseNo << endl;
+        
+        cout << "\n>> Current Ride Logs <<" << endl;
+        ifstream inFile("rides.txt");
+        string line;
+        if (inFile.peek() == EOF) cout << "No active logs." << endl;
+        while (getline(inFile, line)) cout << line << endl;
+        inFile.close();
+    }
+};
+
+int main() {
+    Woman w; Driver d; Admin a;
+    int mainChoice = 0;
+
+    while (mainChoice != 4) {
+        cout << "\n1. Woman Menu\n2. Driver Menu\n3. Admin Menu\n4. Exit\nEnter choice: ";
+        if (!(cin >> mainChoice)) { 
+            cin.clear(); cin.ignore(1000, '\n'); 
+            continue; 
+        }
+
+        switch (mainChoice) {
+            case 1:
+                cout << "\n1. Request Ride\n2. SOS\nChoice: ";
+                int wChoice; cin >> wChoice;
+                if (wChoice == 1) { w.getDetails(); w.saveToFile(); }
+                else w.sosAlert();
+                break;
+            case 2:
+                cout << "\n1. Register Self\n2. Show Requests\n3. Pick & Complete\nChoice: ";
+                int dChoice; cin >> dChoice;
+                if (dChoice == 1) d.setDriverDetails();
+                else if (dChoice == 2) d.showWomenDetails();
+                else if (dChoice == 3) { d.pickRide(); d.removeRide(); }
+                break;
+            case 3:
+                a.viewAllData(d);
+                break;
+            case 4:
+                cout << "Exiting..." << endl;
+                break;
+            default:
+                cout << "Invalid choice." << endl;
+        }
+    }
+    return 0;
+}
