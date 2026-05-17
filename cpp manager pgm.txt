@@ -1,0 +1,62 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Base Class
+class Employee {
+protected:
+    string name;
+    double salary;
+
+public:
+    Employee(string n, double s) : name(n), salary(s) {}
+
+    // Virtual function to enable polymorphism
+    virtual double calculateEarnings() const = 0; 
+    
+    string getName() const { return name; }
+};
+
+// Derived Class: Manager
+class Manager : public Employee {
+protected:
+    double bonus;
+
+public:
+    Manager(string n, double s, double b) : Employee(n, s), bonus(b) {}
+
+    // Earnings = salary + bonus
+    double calculateEarnings() const override {
+        return salary + bonus;
+    }
+};
+
+// Derived Class: Worker
+class Worker : public Employee {
+protected:
+    double hoursWorked;
+    double hourlyWage;
+
+public:
+    // Worker doesn't use the base 'salary' attribute for calculation
+    Worker(string n, double hw, double wage) 
+        : Employee(n, 0), hoursWorked(hw), hourlyWage(wage) {}
+
+    // Earnings = hourly wage * hours worked
+    double calculateEarnings() const override {
+        return hoursWorked * hourlyWage;
+    }
+};
+
+int main() {
+    // Creating instances
+    Manager m1("Anju", 5000, 1500);
+    Worker w1("Ayesha", 40, 25);
+
+    // Displaying results
+    cout << "Manager: " << m1.getName() << " | Total Earnings: " << m1.calculateEarnings() << endl;
+    cout << "Worker: " << w1.getName() << " | Total Earnings: " << w1.calculateEarnings() << endl;
+
+    return 0;
+}
