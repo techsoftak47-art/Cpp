@@ -1,3 +1,10 @@
+/*
+C++ Inheritance Implemention:Create a base class called Employee with attributes like name and salary. Derive two classes, Manager and Worker, from the base class. The Manager class should have an additional attribute for bonus, while the Worker class should have an attribute for hours worked and an hourly wage. Implement virtual methods for calculating the total earnings (salary + bonus for managers, hourly wage * hours worked for workers). Create instances of managers and workers and display their total earnings.
+*/
+
+
+
+
 #include <iostream>
 #include <string>
 
