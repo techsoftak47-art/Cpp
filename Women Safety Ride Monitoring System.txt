@@ -12,8 +12,51 @@ public:
     void getDetails() {
         cout << "\n--- Enter Women Details ---" << endl;
         cout << "Name: "; cin.ignore(); getline(cin, name);
-        cout << "Phone Number: "; getline(cin, phNo);
-        cout << "Emergency Contact: "; getline(cin, emergencyPhNo);
+        
+        
+ // Phone Number Validation
+        while (true) {
+            try {
+                cout << "Phone Number: ";
+                getline(cin, phNo);
+
+                if (phNo.length() != 10)
+                    throw "Phone number must contain exactly 10 digits.";
+
+                for (char c : phNo) {
+                    if (!isdigit(c))
+                        throw "Phone number must contain only digits.";
+                }
+
+                break; // valid number
+            }
+            catch (const char* msg) {
+                cout << "Error: " << msg << endl;
+            }
+        }
+
+        // Emergency Contact Validation
+        while (true) {
+            try {
+                cout << "Emergency Contact: ";
+                getline(cin, emergencyPhNo);
+
+                if (emergencyPhNo.length() != 10)
+                    throw "Emergency contact must contain exactly 10 digits.";
+
+                for (char c : emergencyPhNo) {
+                    if (!isdigit(c))
+                        throw "Emergency contact must contain only digits.";
+                }
+
+                break; // valid number
+            }
+            catch (const char* msg) {
+                cout << "Error: " << msg << endl;
+            }
+        }
+
+            
         cout << "Pickup Point: "; getline(cin, pickup);
         cout << "Destination: "; getline(cin, destination);
     }
@@ -70,6 +113,13 @@ public:
         outFile.close();
         cout << "Ride completed. Records cleared." << endl;
     }
+    
+        double calculateFare() {
+        const double BASE_AMOUNT  = 50.0;
+        const double RATE_PER_KM  = 10.0;
+        const double DISTANCE_KM  = 10.0;  // temporarily fixed
+        return BASE_AMOUNT + (DISTANCE_KM * RATE_PER_KM);
+    }
 };
 
 // Class 3: Admin
@@ -105,7 +155,13 @@ int main() {
             case 1:
                 cout << "\n1. Request Ride\n2. SOS\nChoice: ";
                 int wChoice; cin >> wChoice;
-                if (wChoice == 1) { w.getDetails(); w.saveToFile(); }
+                if (wChoice == 1) { w.getDetails(); w.saveToFile(); 
+                                       // Show fare to passenger after booking
+                    cout << "\n--- Fare Details ---" << endl;
+                    cout << "Base Amount : Rs. 50" << endl;
+                    cout << "Distance    : 10 km @ Rs. 10/km = Rs. 100" << endl;
+                    cout << "Total Fare  : Rs. " << d.calculateFare() << endl;
+                }
                 else w.sosAlert();
                 break;
             case 2:
@@ -113,7 +169,11 @@ int main() {
                 int dChoice; cin >> dChoice;
                 if (dChoice == 1) d.setDriverDetails();
                 else if (dChoice == 2) d.showWomenDetails();
-                else if (dChoice == 3) { d.pickRide(); d.removeRide(); }
+                else if (dChoice == 3) { d.pickRide(); d.removeRide(); 
+                                        // Show fare to driver at ride completion
+                    cout << "\n--- Fare Collected ---" << endl;
+                    cout << "Total Fare  : Rs. " << d.calculateFare() << endl;
+                }
                 break;
             case 3:
                 a.viewAllData(d);
