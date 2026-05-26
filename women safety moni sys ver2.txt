@@ -1,0 +1,189 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+// Class 1: Woman (Passenger)
+class Woman {
+public:
+    string name, phNo, emergencyPhNo, pickup, destination;
+
+    void getDetails() {
+        cout << "\n--- Enter Women Details ---" << endl;
+        cout << "Name: "; cin.ignore(); getline(cin, name);
+        
+        
+ // Phone Number Validation
+        while (true) {
+            try {
+                cout << "Phone Number: ";
+                getline(cin, phNo);
+
+                if (phNo.length() != 10)
+                    throw "Phone number must contain exactly 10 digits.";
+
+                for (char c : phNo) {
+                    if (!isdigit(c))
+                        throw "Phone number must contain only digits.";
+                }
+
+                break; // valid number
+            }
+            catch (const char* msg) {
+                cout << "Error: " << msg << endl;
+            }
+        }
+
+        // Emergency Contact Validation
+        while (true) {
+            try {
+                cout << "Emergency Contact: ";
+                getline(cin, emergencyPhNo);
+
+                if (emergencyPhNo.length() != 10)
+                    throw "Emergency contact must contain exactly 10 digits.";
+
+                for (char c : emergencyPhNo) {
+                    if (!isdigit(c))
+                        throw "Emergency contact must contain only digits.";
+                }
+
+                break; // valid number
+            }
+            catch (const char* msg) {
+                cout << "Error: " << msg << endl;
+            }
+        }
+
+            
+        cout << "Pickup Point: "; getline(cin, pickup);
+        cout << "Destination: "; getline(cin, destination);
+    }
+
+    void sosAlert() {
+        if (name == "") cout << "\n[!!! SOS ALERT !!!] Emergency alert sent to authorities!" << endl;
+        else cout << "\n[!!! SOS ALERT !!!] Emergency alert sent for " << name << "!" << endl;
+    }
+
+    void saveToFile() {
+        ofstream outFile("rides.txt", ios::app);
+        outFile << "Passenger: " << name << " | Ph: " << phNo << " | Route: " << pickup << " to " << destination << endl;
+        outFile.close();
+        cout << "Ride requested and logged." << endl;
+    }
+};
+
+// Class 2: Driver
+class Driver {
+public:
+    string driverName = "", vehicleName = "", licenseNo = "";
+
+    void setDriverDetails() {
+        cout << "\n--- Register Driver ---" << endl;
+        cout << "Driver Name: "; cin.ignore(); getline(cin, driverName);
+        cout << "Vehicle Name: "; getline(cin, vehicleName);
+        cout << "License No: "; getline(cin, licenseNo);
+        cout << "Driver registered successfully." << endl;
+    }
+
+    void showWomenDetails() {
+        ifstream inFile("rides.txt");
+        string line;
+        cout << "\n--- Active Ride Requests ---" << endl;
+        bool found = false;
+        while (getline(inFile, line)) {
+            cout << line << endl;
+            found = true;
+        }
+        if (!found) cout << "No active ride requests." << endl;
+        inFile.close();
+    }
+
+    void pickRide() {
+        if (driverName == "") {
+            cout << "Error: No driver registered to pick the ride!" << endl;
+            return;
+        }
+        cout << "\nDriver " << driverName << " is picking up the passenger." << endl;
+    }
+
+    void removeRide() {
+        ofstream outFile("rides.txt", ios::trunc); 
+        outFile.close();
+        cout << "Ride completed. Records cleared." << endl;
+    }
+    
+        double calculateFare() {
+        const double BASE_AMOUNT  = 50.0;
+        const double RATE_PER_KM  = 10.0;
+        const double DISTANCE_KM  = 10.0;  // temporarily fixed
+        return BASE_AMOUNT + (DISTANCE_KM * RATE_PER_KM);
+    }
+};
+
+// Class 3: Admin
+class Admin {
+public:
+    void viewAllData(Driver d) {
+        cout << "\n--- Admin System Overview ---" << endl;
+        cout << ">> Registered Driver Details <<" << endl;
+        if (d.driverName == "") cout << "No driver registered yet." << endl;
+        else cout << "Name: " << d.driverName << "\nVehicle: " << d.vehicleName << "\nLicense: " << d.licenseNo << endl;
+        
+        cout << "\n>> Current Ride Logs <<" << endl;
+        ifstream inFile("rides.txt");
+        string line;
+        if (inFile.peek() == EOF) cout << "No active logs." << endl;
+        while (getline(inFile, line)) cout << line << endl;
+        inFile.close();
+    }
+};
+
+int main() {
+    Woman w; Driver d; Admin a;
+    int mainChoice = 0;
+
+    while (mainChoice != 4) {
+        cout << "\n1. Woman Menu\n2. Driver Menu\n3. Admin Menu\n4. Exit\nEnter choice: ";
+        if (!(cin >> mainChoice)) { 
+            cin.clear(); cin.ignore(1000, '\n'); 
+            continue; 
+        }
+
+        switch (mainChoice) {
+            case 1:
+                cout << "\n1. Request Ride\n2. SOS\nChoice: ";
+                int wChoice; cin >> wChoice;
+                if (wChoice == 1) { w.getDetails(); w.saveToFile(); 
+                                       // Show fare to passenger after booking
+                    cout << "\n--- Fare Details ---" << endl;
+                    cout << "Base Amount : Rs. 50" << endl;
+                    cout << "Distance    : 10 km @ Rs. 10/km = Rs. 100" << endl;
+                    cout << "Total Fare  : Rs. " << d.calculateFare() << endl;
+                }
+                else w.sosAlert();
+                break;
+            case 2:
+                cout << "\n1. Register Self\n2. Show Requests\n3. Pick & Complete\nChoice: ";
+                int dChoice; cin >> dChoice;
+                if (dChoice == 1) d.setDriverDetails();
+                else if (dChoice == 2) d.showWomenDetails();
+                else if (dChoice == 3) { d.pickRide(); d.removeRide(); 
+                                        // Show fare to driver at ride completion
+                    cout << "\n--- Fare Collected ---" << endl;
+                    cout << "Total Fare  : Rs. " << d.calculateFare() << endl;
+                }
+                break;
+            case 3:
+                a.viewAllData(d);
+                break;
+            case 4:
+                cout << "Exiting..." << endl;
+                break;
+            default:
+                cout << "Invalid choice." << endl;
+        }
+    }
+    return 0;
+}
