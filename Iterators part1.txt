@@ -1,0 +1,136 @@
+/*
+#include <iostream>
+#include <map>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    map<string, int> ageMap;
+
+    ageMap["Alice"] = 30;
+    ageMap["Bob"] = 25;
+    ageMap["Charlie"] = 40;
+    ageMap["David"] = 35;
+
+    string eldestPerson;
+    int maxAge = 0;
+
+    // Find the eldest person
+    for (const auto& pair : ageMap)
+    {
+        if (pair.second > maxAge)
+        {
+            maxAge = pair.second;
+            eldestPerson = pair.first;
+        }
+    }
+
+    cout << "The eldest person is "
+         << eldestPerson
+         << " with age "
+         << maxAge
+         << endl;
+
+    return 0;
+}
+
+*/
+
+
+/*
+#include <iostream>
+#include<map>
+#include<string>
+using namespace std;
+int main()
+{
+ int age=0;
+    map<string, int> ageMap;
+    ageMap["Alice"] = 30;
+    ageMap["Bob"] = 25;
+    
+    for(const auto& pair:ageMap)
+    {
+        cout<<pair.first<<"is"<<pair.second<<"years old"<<endl;
+        
+    }
+    
+
+    return 0;
+}
+*/
+
+
+
+
+
+
+/*
+
+
+//write a cpp program using map to store the address of 5 students with their 
+//role number as key. Display the address of the person with the role number CZ500.
+
+
+#include <iostream>
+#include <map>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    // Map to store roll number and address
+    map<string, string> studentAddress;
+
+    // Storing 5 students' addresses
+    studentAddress["CZ100"] = "Chennai";
+    studentAddress["CZ200"] = "Bangalore";
+    studentAddress["CZ300"] = "Hyderabad";
+    studentAddress["CZ400"] = "Mumbai";
+    studentAddress["CZ500"] = "Delhi";
+
+    // Display address of student with roll number CZ500
+    cout << "Address of student with roll number CZ500 is: "
+         << studentAddress["CZ500"]
+         << endl;
+
+    return 0;
+}
+*/
+
+
+
+
+/*
+
+#include <iostream>
+#include <vector>
+#include <list>
+using namespace std;
+int main() {
+    // Example with std::vector
+    vector<char> vec = {'A','B', 'C', 'D', 'E'};
+    
+    cout << "Vector elements using iterators:" << endl;
+    // Using iterator to traverse the vector
+    for (vector<char>::iterator it = vec.begin(); it != vec.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+    // Example with std::list
+    list<int> lst = {10, 20, 30, 40, 50};
+    
+    cout << "List elements using iterators:" << endl;
+    // Using iterator to traverse the list
+    for (list<int>::iterator it = lst.begin(); it != lst.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+    return 0;
+}
+
+
+*/
